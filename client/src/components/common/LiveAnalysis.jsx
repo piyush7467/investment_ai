@@ -76,9 +76,9 @@ const LiveAnalysis = () => {
   return (
     <section
       id="live-analysis"
-      className="py-28 px-6"
+      className="py-12 sm:py-24 px-6 sm:px-8"
     >
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-14 items-start">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
 
         {/* LEFT */}
 
@@ -86,11 +86,11 @@ const LiveAnalysis = () => {
 
           <div className="flex items-center justify-between">
 
-            <span className="text-emerald-400 font-semibold">
+            <span className="text-emerald-400 font-semibold text-sm">
               LIVE DEMO
             </span>
 
-            <span className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm">
+            <span className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs sm:text-sm">
 
               {remaining} / 5 Free Searches Left
 
@@ -98,13 +98,13 @@ const LiveAnalysis = () => {
 
           </div>
 
-          <h2 className="heading text-5xl mt-6">
+          <h2 className="heading text-3xl sm:text-4xl lg:text-5xl font-black mt-6 leading-tight">
             Try InvestmentAI
             <br />
             Without Signing Up
           </h2>
 
-          <p className="mt-6 text-slate-400 text-lg leading-8">
+          <p className="mt-6 text-slate-400 text-sm sm:text-lg leading-relaxed sm:leading-8">
             Experience the complete AI investment report.
             Guests receive 5 free analyses with no hidden data.
           </p>
@@ -156,7 +156,7 @@ const LiveAnalysis = () => {
 
         {/* RIGHT */}
 
-        <div className="bg-[#151A21] border border-white/10 rounded-3xl p-8 min-h-[650px]">
+        <div className="bg-[#151A21] border border-white/10 rounded-3xl p-6 sm:p-8 min-h-[500px] sm:min-h-[650px]">
 
           {!analysis ? (
 
@@ -325,13 +325,13 @@ const LiveAnalysis = () => {
 };
 
 const StatCard = ({ title, value, color }) => (
-  <div className="bg-[#0D1117] border border-white/10 rounded-2xl p-5">
+  <div className="bg-[#0D1117] border border-white/10 rounded-2xl p-4 sm:p-5">
 
-    <p className="text-slate-500 text-sm">
+    <p className="text-slate-500 text-xs sm:text-sm">
       {title}
     </p>
 
-    <h3 className={`text-2xl font-bold mt-3 ${color || ""}`}>
+    <h3 className={`text-lg sm:text-2xl font-bold mt-2 sm:mt-3 ${color || ""}`}>
       {value || "N/A"}
     </h3>
 
