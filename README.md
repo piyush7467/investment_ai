@@ -63,7 +63,7 @@ InvestmentAI empowers both guest users and registered users to make data-driven 
    npm run dev
    ```
 
-4. Open `http://localhost:5173` in your browser.
+4. Open `https://investment-ai-zeta.vercel.app/` in your browser.
 
 ---
 
