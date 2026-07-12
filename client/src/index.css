@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+
+body{
+
+    font-family: "Inter",sans-serif;
+
+    background:#0D1117;
+
+    color:#F8FAFC;
+
+}
+
+.heading{
+
+    font-family:"Space Grotesk",sans-serif;
+
+}
+
+.number{
+
+    font-family:"JetBrains Mono",monospace;
+
+}
