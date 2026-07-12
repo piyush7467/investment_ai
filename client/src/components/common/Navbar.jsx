@@ -40,8 +40,8 @@ const Navbar = () => {
                     <a href="#workflow" className="hover:text-emerald-400 transition text-sm text-slate-400">
                         Workflow
                     </a>
-                    <a href="#pricing" className="hover:text-emerald-400 transition text-sm text-slate-400">
-                        Pricing
+                    <a href="#live-analysis" className="hover:text-emerald-400 transition text-sm text-slate-400">
+                        Live Demo
                     </a>
                 </div>
 
