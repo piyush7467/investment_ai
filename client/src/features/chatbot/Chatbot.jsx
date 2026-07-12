@@ -103,7 +103,7 @@ const Chatbot = () => {
       {/* Floating Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-br from-emerald-500 to-cyan-400 rounded-full flex items-center justify-center shadow-2xl cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+        className="fixed bottom-6 right-4 sm:right-6 z-50 w-14 h-14 bg-gradient-to-br from-emerald-500 to-cyan-400 rounded-full flex items-center justify-center shadow-2xl cursor-pointer hover:scale-105 active:scale-95 transition-transform"
       >
         {isOpen ? (
           <FaTimes className="text-black text-xl" />
@@ -121,7 +121,7 @@ const Chatbot = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-96 h-[520px] bg-[#151A21] border border-white/10 rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-fade-in">
+        <div className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-96 h-[520px] max-h-[calc(100vh-120px)] bg-[#151A21] border border-white/10 rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-fade-in">
           {/* Header */}
           <div className="bg-[#0D1117] p-5 border-b border-white/10 flex items-center justify-between">
             <div className="flex items-center gap-3">
