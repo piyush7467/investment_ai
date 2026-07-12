@@ -1,13 +1,29 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
 import errorMiddleware from "./middleware/errorMiddleware.js";
 import ApiResponse from "./utils/ApiResponse.js";
-
+import connectDB from "./config/db.js";
 import routes from "./routes/index.js";
 
+dotenv.config();
 
 const app = express();
+
+// Database connection middleware for Serverless compatibility
+let isConnected = false;
+app.use(async (req, res, next) => {
+    if (!isConnected) {
+        try {
+            await connectDB();
+            isConnected = true;
+        } catch (err) {
+            console.error("DB connection error in serverless request:", err.message);
+        }
+    }
+    next();
+});
 
 // Middlewares
 app.use(
