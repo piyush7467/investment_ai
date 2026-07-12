@@ -6,7 +6,7 @@ import { getHistory } from "../../features/investment/investment.api";
 import { setHistoryList, analysisSuccess, clearAnalysis } from "../../features/investment/investment.slice";
 import { logout } from "../../features/auth/auth.slice";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -33,25 +33,34 @@ const Sidebar = () => {
 
     const handleLogout = () => {
         dispatch(logout());
+        if (onClose) onClose();
         navigate("/");
     };
 
     const handleNewAnalysis = () => {
         dispatch(clearAnalysis());
+        if (onClose) onClose();
         navigate("/dashboard");
     };
 
     const handleSelectHistory = (item) => {
         dispatch(analysisSuccess(item));
+        if (onClose) onClose();
         navigate("/analysis");
     };
 
+    const handleLinkClick = () => {
+        if (onClose) onClose();
+    };
+
     return (
-        <aside className="w-64 bg-[#0D1117] border-r border-white/10 h-screen sticky top-0 flex flex-col justify-between flex-shrink-0 z-40">
+        <aside className={`fixed md:sticky top-0 left-0 h-screen w-64 bg-[#0D1117] border-r border-white/10 z-50 flex flex-col justify-between flex-shrink-0 transition-transform duration-300 ${
+            isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}>
             
             {/* Top Branding & Action */}
             <div className="p-5 flex flex-col gap-5">
-                <Link to="/" className="flex items-center gap-3">
+                <Link to="/" onClick={handleLinkClick} className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center">
                         <FaChartLine className="text-black text-sm"/>
                     </div>
@@ -64,7 +73,7 @@ const Sidebar = () => {
 
                 <button
                     onClick={handleNewAnalysis}
-                    className="w-full py-3 bg-gradient-to-r from-emerald-500/10 to-cyan-400/10 hover:from-emerald-500/20 hover:to-cyan-400/20 text-emerald-400 border border-emerald-500/20 hover:border-emerald-500/40 rounded-xl font-semibold flex items-center justify-center gap-2 transition"
+                    className="w-full py-3 bg-gradient-to-r from-emerald-500/10 to-cyan-400/10 hover:from-emerald-500/20 hover:to-cyan-400/20 text-emerald-400 border border-emerald-500/20 hover:border-emerald-500/40 rounded-xl font-semibold flex items-center justify-center gap-2 transition cursor-pointer"
                 >
                     <FaPlus className="text-xs" />
                     New Research
@@ -80,8 +89,7 @@ const Sidebar = () => {
 
                 {history && history.length > 0 ? (
                     history.map((item) => {
-                        const isActive = location.pathname === "/analysis" && 
-                                         analysis?._id === item._id;
+                        const isActive = location.pathname === "/analysis" && analysis?._id === item._id;
                         return (
                             <button
                                 key={item._id}
@@ -115,6 +123,7 @@ const Sidebar = () => {
             <div className="p-4 border-t border-white/5 bg-[#090D12]">
                 <Link
                     to="/profile"
+                    onClick={handleLinkClick}
                     className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#151A21] transition"
                 >
                     <img
@@ -134,6 +143,7 @@ const Sidebar = () => {
                 <div className="grid grid-cols-2 gap-2 mt-3">
                     <Link
                         to="/profile"
+                        onClick={handleLinkClick}
                         className="py-2 text-center rounded-lg border border-white/10 hover:border-emerald-400/30 text-xs text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5"
                     >
                         <FaUser className="text-[10px]" />
