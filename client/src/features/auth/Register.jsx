@@ -118,7 +118,7 @@ const Register = () => {
 
             <input
               type="text"
-              placeholder="John Doe"
+              placeholder="abc"
               {...register("name")}
               className="w-full rounded-2xl bg-[#0D1117] border border-white/10 px-5 py-4 outline-none focus:border-emerald-400"
             />
@@ -141,7 +141,7 @@ const Register = () => {
 
             <input
               type="email"
-              placeholder="john@example.com"
+              placeholder="abc@example.com"
               {...register("email")}
               className="w-full rounded-2xl bg-[#0D1117] border border-white/10 px-5 py-4 outline-none focus:border-emerald-400"
             />
