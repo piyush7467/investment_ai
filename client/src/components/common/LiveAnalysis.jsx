@@ -109,7 +109,7 @@ const LiveAnalysis = () => {
             Guests receive 5 free analyses with no hidden data.
           </p>
 
-          <div className="mt-10 flex gap-4">
+          <div className="mt-10 flex flex-col sm:flex-row gap-4">
 
             <div className="flex-1 relative">
 
@@ -131,7 +131,7 @@ const LiveAnalysis = () => {
             <button
               onClick={handleAnalyze}
               disabled={loading || hasReachedLimit()}
-              className="px-8 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-400 text-black font-semibold flex items-center gap-3 hover:scale-105 transition disabled:opacity-50 disabled:hover:scale-100"
+              className="px-8 py-4 sm:py-0 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-400 text-black font-semibold flex items-center justify-center gap-3 hover:scale-105 transition disabled:opacity-50 disabled:hover:scale-100 w-full sm:w-auto cursor-pointer"
             >
               {loading ? (
                 "Analyzing..."
@@ -287,7 +287,7 @@ const LiveAnalysis = () => {
 
               <div className="mt-10 border-t border-white/10 pt-8">
 
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
 
                   <div>
 
@@ -304,7 +304,7 @@ const LiveAnalysis = () => {
 
                   <Link
                     to="/register"
-                    className="px-7 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-400 text-black font-semibold"
+                    className="px-7 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-400 text-black font-semibold text-center w-full sm:w-auto block cursor-pointer"
                   >
                     Register Free
                   </Link>

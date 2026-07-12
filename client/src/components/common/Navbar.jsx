@@ -48,13 +48,13 @@ const Navbar = () => {
                 {/* Right Side Auth Controls */}
                 <div className="flex items-center gap-4">
                     {isAuthenticated && user ? (
-                        <div className="flex items-center gap-5">
+                        <div className="flex items-center gap-2 sm:gap-5">
                             <Link
                                 to="/dashboard"
                                 className="flex items-center gap-2 text-slate-300 hover:text-emerald-400 text-sm font-medium transition"
                             >
                                 <FaChartBar className="text-xs" />
-                                Dashboard
+                                <span className="hidden sm:inline">Dashboard</span>
                             </Link>
 
                             {/* Profile Link showing avatar */}
@@ -78,7 +78,7 @@ const Navbar = () => {
 
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm border border-red-500/20 hover:border-red-500/50 text-red-400 hover:bg-red-500/5 transition font-semibold"
+                                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm border border-red-500/20 hover:border-red-500/50 text-red-400 hover:bg-red-500/5 transition font-semibold cursor-pointer animate-fade-in"
                             >
                                 <FaSignOutAlt className="text-xs" />
                                 <span className="hidden sm:inline">Logout</span>
