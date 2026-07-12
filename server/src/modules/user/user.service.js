@@ -16,7 +16,6 @@ class UserService {
         if (updateData.name) {
             const trimmedName = updateData.name.trim();
             if (trimmedName.length < 3) {
-                if (file && fs.existsSync(file.path)) fs.unlinkSync(file.path);
                 throw new ApiError(
                     HTTP_STATUS.BAD_REQUEST,
                     "Name must be at least 3 characters long."
@@ -25,16 +24,28 @@ class UserService {
             user.name = trimmedName;
         }
 
-        // 2. Handle avatar upload to Cloudinary
+        // 2. Handle avatar upload to Cloudinary (using memory buffer for serverless compatibility)
         if (file) {
             try {
-                const result = await cloudinary.uploader.upload(file.path, {
-                    folder: "investment-ai/avatars",
-                    use_filename: true,
-                    unique_filename: true,
-                    resource_type: "auto"
-                });
+                const uploadFromBuffer = (fileBuffer) => {
+                    return new Promise((resolve, reject) => {
+                        const uploadStream = cloudinary.uploader.upload_stream(
+                            {
+                                folder: "investment-ai/avatars",
+                                use_filename: true,
+                                unique_filename: true,
+                                resource_type: "auto"
+                            },
+                            (error, result) => {
+                                if (error) return reject(error);
+                                resolve(result);
+                            }
+                        );
+                        uploadStream.end(fileBuffer);
+                    });
+                };
 
+                const result = await uploadFromBuffer(file.buffer);
                 user.avatar = result.secure_url;
             } catch (uploadError) {
                 console.error("Cloudinary upload failed:", uploadError.message);
@@ -42,11 +53,6 @@ class UserService {
                     HTTP_STATUS.INTERNAL_SERVER_ERROR,
                     "Failed to upload image to cloud storage."
                 );
-            } finally {
-                // Remove temporary file from local filesystem
-                if (fs.existsSync(file.path)) {
-                    fs.unlinkSync(file.path);
-                }
             }
         }
 
