@@ -71,7 +71,8 @@ const Analysis = () => {
 
   }
 
-  if (analysis.errors) {
+  // Only show the failure page if the fundamental research data itself failed to load
+  if (analysis.errors && analysis.errors.message) {
     return (
       <div className="max-w-3xl mx-auto py-20 text-center">
         <h1 className="text-3xl font-bold text-red-500">
@@ -84,7 +85,7 @@ const Analysis = () => {
 
         <button
           onClick={() => navigate(user ? "/dashboard" : "/")}
-          className="mt-8 px-6 py-3 rounded-xl bg-emerald-500 text-black"
+          className="mt-8 px-6 py-3 rounded-xl bg-emerald-500 text-black cursor-pointer"
         >
           Back
         </button>
@@ -108,11 +109,29 @@ const Analysis = () => {
 
       <button
         onClick={() => navigate(user ? "/dashboard" : "/")}
-        className="flex items-center gap-3 text-slate-400 hover:text-white transition"
+        className="flex items-center gap-3 text-slate-400 hover:text-white transition cursor-pointer"
       >
         <FaArrowLeft />
         Back to Dashboard
       </button>
+
+      {/* Gemini API Quota limit warning */}
+      {analysis.errors?.gemini && (
+        <div className="mt-8 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 p-6 rounded-3xl text-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <strong className="block font-bold text-lg">AI Rate Limit Exceeded</strong>
+            <p className="mt-1 text-slate-400 text-xs leading-relaxed">
+              Your Gemini API free tier daily quota (20 requests/day) has been reached. Showing complete financial sheets, news, and statistics instead of dynamic AI summaries.
+            </p>
+          </div>
+          <button
+            onClick={() => navigate(user ? "/dashboard" : "/")}
+            className="px-4 py-2 bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 text-xs font-semibold rounded-xl transition flex-shrink-0 cursor-pointer"
+          >
+            Try Another Symbol
+          </button>
+        </div>
+      )}
 
       {/* Header */}
 
