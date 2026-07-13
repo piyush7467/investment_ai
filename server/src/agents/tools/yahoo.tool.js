@@ -1,4 +1,5 @@
 import YahooFinance from "yahoo-finance2";
+import geminiTool from "./gemini.tool.js";
 
 const yahooFinance = new YahooFinance();
 
@@ -12,8 +13,8 @@ class YahooTool {
         const query = input.trim();
         let candidates = [query.toUpperCase()]; // start with user input symbol
 
+        // 1. Try autocomplete lookup via Yahoo Search
         try {
-            // Search Yahoo Finance to find ticker suggestions
             const searchResult = await yahooFinance.search(query);
 
             if (searchResult?.quotes && searchResult.quotes.length > 0) {
@@ -38,11 +39,22 @@ class YahooTool {
             console.log("Yahoo autocomplete lookup failed:", error.message);
         }
 
+        // 2. AI-Powered Fallback: If no candidate suggestions were found from Yahoo Search,
+        // use Gemini to correct any spelling mistakes and suggest the correct ticker.
+        if (candidates.length <= 1) {
+            console.log("No autocomplete suggestions. Querying Gemini to correct spelling of query:", query);
+            const corrected = await geminiTool.correctTicker(query);
+            if (corrected && !candidates.includes(corrected)) {
+                console.log("Gemini corrected query to ticker:", corrected);
+                candidates.push(corrected);
+            }
+        }
+
         console.log("Candidate tickers resolved for lookup:", candidates);
 
         let lastError = null;
 
-        // Iterate candidates and return summary on first success
+        // 3. Iterate candidates and return summary on first success
         for (const symbol of candidates) {
             try {
                 console.log("Attempting to fetch Yahoo Finance summary for:", symbol);

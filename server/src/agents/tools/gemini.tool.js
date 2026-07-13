@@ -143,6 +143,33 @@ Return EXACTLY this JSON structure:
 
         return response.text;
     }
+
+    async correctTicker(query) {
+        try {
+            const prompt = `
+You are a financial symbol correction tool.
+Correct the following company name or stock symbol to its official stock ticker symbol.
+If the symbol is from a non-US market (like India), append the appropriate extension (e.g. .NS for National Stock Exchange of India, .BO for Bombay Stock Exchange).
+
+Input: ${query}
+
+Return ONLY the official uppercase ticker symbol (e.g. NVDA, AAPL, MSFT, RELIANCE.NS, TSLA). Do not include any explanation or markdown formatting.
+`;
+
+            const response = await this.ai.models.generateContent({
+                model: "gemini-2.5-flash",
+                contents: prompt,
+                config: {
+                    temperature: 0.1,
+                }
+            });
+
+            return response.text ? response.text.trim().toUpperCase() : null;
+        } catch (error) {
+            console.error("Gemini ticker correction failed:", error.message);
+            return null;
+        }
+    }
 }
 
 export default new GeminiTool();
