@@ -1,81 +1,46 @@
 const mapInvestmentData = (data) => {
-
     return {
-
         company: {
-
-            name: data.price.longName,
-
-            symbol: data.price.symbol,
-
-            sector: data.assetProfile.sector,
-
-            industry: data.assetProfile.industry,
-
-            website: data.assetProfile.website,
-
-            description: data.assetProfile.longBusinessSummary,
-
-            employees: data.assetProfile.fullTimeEmployees
-
+            name: data?.price?.longName || data?.price?.shortName || data?.price?.symbol || "Unknown Company",
+            symbol: data?.price?.symbol || "UNKNOWN",
+            sector: data?.assetProfile?.sector || "N/A",
+            industry: data?.assetProfile?.industry || "N/A",
+            website: data?.assetProfile?.website || "N/A",
+            description: data?.assetProfile?.longBusinessSummary || "No description available.",
+            employees: data?.assetProfile?.fullTimeEmployees || 0
         },
 
         market: {
-
-            currentPrice: data.price.regularMarketPrice,
-
-            previousClose: data.price.regularMarketPreviousClose,
-
-            marketCap: data.price.marketCap,
-
-            exchange: data.price.exchangeName,
-
-            currency: data.price.currency
-
+            currentPrice: data?.price?.regularMarketPrice || null,
+            previousClose: data?.price?.regularMarketPreviousClose || null,
+            marketCap: data?.price?.marketCap || null,
+            exchange: data?.price?.exchangeName || "N/A",
+            currency: data?.price?.currency || "USD"
         },
 
         financials: {
-
-            revenue: data.financialData.totalRevenue,
-
-            cash: data.financialData.totalCash,
-
-            debt: data.financialData.totalDebt,
-
-            freeCashFlow: data.financialData.freeCashflow,
-
-            operatingCashFlow: data.financialData.operatingCashflow,
-
-            grossMargin: data.financialData.grossMargins,
-
-            profitMargin: data.financialData.profitMargins
-
+            revenue: data?.financialData?.totalRevenue || null,
+            cash: data?.financialData?.totalCash || null,
+            debt: data?.financialData?.totalDebt || null,
+            freeCashFlow: data?.financialData?.freeCashflow || null,
+            operatingCashFlow: data?.financialData?.operatingCashflow || null,
+            grossMargin: data?.financialData?.grossMargins || null,
+            profitMargin: data?.financialData?.profitMargins || null
         },
 
         statistics: {
-
-            peRatio: data.defaultKeyStatistics.forwardPE,
-
-            eps: data.defaultKeyStatistics.forwardEps,
-
-            beta: data.defaultKeyStatistics.beta,
-
-            pegRatio: data.defaultKeyStatistics.pegRatio
-
+            peRatio: data?.defaultKeyStatistics?.forwardPE || null,
+            eps: data?.defaultKeyStatistics?.forwardEps || null,
+            beta: data?.defaultKeyStatistics?.beta || null,
+            pegRatio: data?.defaultKeyStatistics?.pegRatio || null
         },
 
         analyst: {
-
-            recommendation: data.financialData.recommendationKey,
-
-            recommendationScore: data.financialData.recommendationMean,
-
-            analystCount: data.financialData.numberOfAnalystOpinions
-
+            recommendation: data?.financialData?.recommendationKey || "N/A",
+            recommendationScore: data?.financialData?.recommendationMean || null,
+            analystCount: data?.financialData?.numberOfAnalystOpinions || 0
         }
-
     };
-
 };
 
 export default mapInvestmentData;

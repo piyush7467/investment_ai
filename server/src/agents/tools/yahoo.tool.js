@@ -5,41 +5,70 @@ const yahooFinance = new YahooFinance();
 class YahooTool {
 
     async getCompanyData(input) {
-
         if (!input) {
             throw new Error("Company name or symbol is required.");
         }
 
-        let symbol = input.trim().toUpperCase();
+        const query = input.trim();
+        let candidates = [query.toUpperCase()]; // start with user input symbol
 
         try {
-            // If the user entered a company name (Apple, Tesla, etc.),
-            // search Yahoo Finance to find its ticker.
-            const searchResult = await yahooFinance.search(input);
+            // Search Yahoo Finance to find ticker suggestions
+            const searchResult = await yahooFinance.search(query);
 
-            if (
-                searchResult?.quotes &&
-                searchResult.quotes.length > 0
-            ) {
-                symbol = searchResult.quotes[0].symbol;
+            if (searchResult?.quotes && searchResult.quotes.length > 0) {
+                // Sort quotes to prioritize EQUITY stock types
+                const sortedQuotes = [...searchResult.quotes].sort((a, b) => {
+                    const aIsEquity = a.quoteType === "EQUITY" ? 1 : 0;
+                    const bIsEquity = b.quoteType === "EQUITY" ? 1 : 0;
+                    return bIsEquity - aIsEquity;
+                });
+
+                // Extract symbols and push to candidate array, avoiding duplicates
+                for (const quote of sortedQuotes) {
+                    if (quote.symbol) {
+                        const sym = quote.symbol.toUpperCase();
+                        if (!candidates.includes(sym)) {
+                            candidates.push(sym);
+                        }
+                    }
+                }
             }
         } catch (error) {
-            // Ignore search failure and fall back to the user's input.
-            console.log("Yahoo search failed, using input as symbol.");
+            console.log("Yahoo autocomplete lookup failed:", error.message);
         }
 
-        console.log("Fetching Yahoo Finance data for:", symbol);
+        console.log("Candidate tickers resolved for lookup:", candidates);
 
-        const result = await yahooFinance.quoteSummary(symbol, {
-            modules: [
-                "assetProfile",
-                "price",
-                "financialData",
-                "defaultKeyStatistics",
-            ],
-        });
+        let lastError = null;
 
-        return result;
+        // Iterate candidates and return summary on first success
+        for (const symbol of candidates) {
+            try {
+                console.log("Attempting to fetch Yahoo Finance summary for:", symbol);
+                const result = await yahooFinance.quoteSummary(symbol, {
+                    modules: [
+                        "assetProfile",
+                        "price",
+                        "financialData",
+                        "defaultKeyStatistics",
+                    ],
+                });
+
+                // Verify we got valid price data
+                if (result && result.price) {
+                    console.log("✅ Successfully retrieved summary for:", symbol);
+                    return result;
+                }
+            } catch (err) {
+                console.log(`Failed for candidate ${symbol}:`, err.message);
+                lastError = err;
+            }
+        }
+
+        throw new Error(
+            lastError?.message || `Could not find company details for "${input}". Please check symbol.`
+        );
     }
 }
 
